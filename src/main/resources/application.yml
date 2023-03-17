@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/jpashop;MVCC=TRUE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver #database커넥션관련 dataSource설정이 완료가 된다.
+
+    jpa:
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+#          show_sql: true # system.out으로 출력
+          format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug # log로 출력 hibernate SQL을 Debug모드로 사용하겠다
