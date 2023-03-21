@@ -23,9 +23,7 @@ public abstract class Item {
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
 
-    //== 비즈니스 로직 ==//
-    // 도메인 주도 설계에서는 엔티티 안에 비즈니스 로직을 넣어주는게 좋다. 높은 응집도
-
+    //== 비즈니스 로직 ==// - 도메인 주도 설계에서는 데이터를 소유하고 있는 엔티티 안에 비즈니스 로직을 넣어주는게 좋다. (높은 응집도 가진다)
     /**
      * stock - 재고 수량 증가 로직
      */
