@@ -29,4 +29,8 @@ public class OrderItem {
     public void cancel() {
         getItem().addStock(count); //Item의 재고 수량을 원상복구 시킨다.
     }
+
+    public int getTotalPrice() {
+        return getOrderPrice() * getCount();
+    }
 }
