@@ -11,7 +11,7 @@ public class Delivery {
     @Id @GeneratedValue
     @Column(name = "delivery_id")
     private Long id;
-    @OneToOne(mappedBy = "delivery") //양방향 1대1 매핑 관계
+    @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY) //양방향 1대1 매핑 관계
     private Order order;
     @Embedded //내장타입 컬럼
     private Address address;

@@ -22,7 +22,7 @@ public class Category {
     ) // Item과 Category의 컬렉션 관계를 양쪽에 가지고 있을수 없으므로 일대다 다대일로 풀어내는 중간 테이블이 있어야 한다.
     private List<Item> items = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="parent_id")
     private Category parent;
     @OneToMany(mappedBy = "parent")
