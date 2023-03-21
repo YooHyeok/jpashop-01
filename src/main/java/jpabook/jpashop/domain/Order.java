@@ -67,10 +67,24 @@ public class Order {
         order.setMember(member);
         order.setDelivery(delivery); //양방향
         for (OrderItem orderItem: orderItems) {
-            order.addOrderItem(orderItem); //양방향
+            order.addOrderItem(orderItem); //양방향 - orderItems List에 추가
         }
-        order.setStatus(OrderStatus.ORDER);
+        order.setStatus(OrderStatus.ORDER); //주문 상태값을 주문으로 변경
         order.setOrderDate(LocalDateTime.now());
         return order;
+    }
+
+    // ==주문 취소== //
+    /**
+     * 주문 취소
+     */
+    public void cancel() {
+        if (delivery.getStatus() == DeliveryStatus.COMP) {
+            throw new IllegalStateException("이미 배송 완료된 상품은 취소가 불가능합니다.");
+        }
+        this.setStatus(OrderStatus.CANCEL);
+        for (OrderItem orderItem : orderItems) {
+            orderItem.cancel(); // orderItem을 각각 Cancel 해줘야한다.
+        }
     }
 }

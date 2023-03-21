@@ -20,6 +20,13 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
+
     private int orderPrice;
+
     private int count;
+
+    // ==비즈니스 로직== //
+    public void cancel() {
+        getItem().addStock(count); //Item의 재고 수량을 원상복구 시킨다.
+    }
 }
