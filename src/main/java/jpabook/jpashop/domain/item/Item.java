@@ -32,5 +32,14 @@ public abstract class Item {
     public void addStock(int quantity) {
         this.stockQuantity += quantity;
     }
-
+    /**
+     * stock - 재고 수량 감소 로직
+     */
+    public void removeStock(int quantity) {
+        int restStock = this.stockQuantity - quantity; // 현재 남은 수량 - 주문 수량
+        if (restStock < 0) { // 기본 재고 수량은 음수가 되면 안된다.
+            throw new NotEnoughStockException("need more Stock");
+        }
+        this.stockQuantity = restStock; // 기본 재고 수량이 음수보다 클 경우 정상적으로 처리.
+    }
 }
