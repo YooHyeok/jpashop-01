@@ -16,15 +16,35 @@ public class Order {
     @Id @GeneratedValue
     @Column(name="order_id")
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY) // Order 테이블과 Member 테이블은 양방향 다대일관계 - 여러개의 주문은 한명의 회원을 가질 수 있다.
     @JoinColumn(name="member_id") // Member테이블의 Pk인 Member_id를 Orders 테이블의 Fk 외래키로 설정한다.
     private Member member;
-    @OneToMany(mappedBy = "order")
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) //cascade : OrderItems에 데이터만 넣어두고 Order를 저장하면 OrderItems도 함께 저장됨
     private List<OrderItem> orderItems = new ArrayList<>();
-    @OneToOne(fetch = FetchType.LAZY) //양방향 1대1 매핑 관계
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) //양방향 1대1 매핑 관계
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
+
     private LocalDateTime orderDate; //주문 시간
+
     @Enumerated(EnumType.STRING) //ORDINAL는 정수 증가값 이므로 밀릴위험이 다분하다.
     private OrderStatus status; //주문 상태 [ORDER, CANCEL] 주문/취소
+
+    //==연관관계 메서드==//
+    public void setMember(Member member) {
+        this.member = member;
+        member.getOrders().add(this); // orders List에 member를 추가한다.
+    }
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.setOrder(this);
+    }
 }
