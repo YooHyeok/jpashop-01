@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain.item;
 
 import jpabook.jpashop.Category;
+import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,4 +22,15 @@ public abstract class Item {
     private int stockQuantity; //재고 수량
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
+
+    //== 비즈니스 로직 ==//
+    // 도메인 주도 설계에서는 엔티티 안에 비즈니스 로직을 넣어주는게 좋다. 높은 응집도
+
+    /**
+     * stock - 재고 수량 증가 로직
+     */
+    public void addStock(int quantity) {
+        this.stockQuantity += quantity;
+    }
+
 }
