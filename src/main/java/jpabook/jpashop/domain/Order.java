@@ -99,4 +99,10 @@ public class Order {
         }
         return totalPrice;
     }
+    /**
+     * ==> stream 문법으로 처리하는 로직
+     *      return orderItems.stream()
+     *                .mapToInt(OrderItem::getTotalPrice)
+     *                .sum();
+     */
 }
