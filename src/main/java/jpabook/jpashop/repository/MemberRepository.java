@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository // component스캔의 대상이된다. @SpringBootApplication이 선언된 클래스의 패키지를 포함 하위에 있는 모든 component를 스캔한뒤 빈으로 등록해준다.
 public class MemberRepository {
-    @PersistenceContext //Spring이 EntityManager를 주입시켜준다.
+    @PersistenceContext //Spring이 EntityManager를 주입시켜준다. - spring data jpa에서 @Autowired나 @RequiredArgsConstructor로도 주입 가능.
     private EntityManager em;
 
     public void save(Member member) {
