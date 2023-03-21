@@ -60,4 +60,17 @@ public class Order {
         this.delivery = delivery;
         delivery.setOrder(this);
     }
+
+    // ==생성 메서드== //
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) { // OrderItem... 은 List<OrderItem>과 같다...
+        Order order = new Order();
+        order.setMember(member);
+        order.setDelivery(delivery); //양방향
+        for (OrderItem orderItem: orderItems) {
+            order.addOrderItem(orderItem); //양방향
+        }
+        order.setStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
 }
