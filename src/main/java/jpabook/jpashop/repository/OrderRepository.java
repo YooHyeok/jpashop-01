@@ -7,6 +7,8 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -64,5 +66,34 @@ public class OrderRepository {
             query = query.setParameter("name", orderSearch.getMemberName()); //Order와 연관된 member를 조인하는 join쿼리. o.member m 으로 표현한다.
 
         return query.getResultList();
+    }
+
+    /**
+     * JPA Criteria 기능
+     * 단점 : 유지보수성 ZERO 가독성 똥망
+     */
+    public List<Order> findAllByCriteria(OrderSearch orderSearch) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Order> cq = cb.createQuery(Order.class);
+        Root<Order> o = cq.from(Order.class); // from 타입 Order Alias o 지정
+        Join<Object, Object> m = o.join("member", JoinType.INNER); //조인 타입 Member - Alias m 지정
+        List<Predicate> criteria = new ArrayList<>(); // Predicate : 동적쿼리에 대한 컨디션 조합을 깔끔하게 생성할 수 있다.
+
+        //주문 상태 검색
+        if (orderSearch.getOrderStatus() != null) {
+            Predicate status = cb.equal(o.get("status"), orderSearch.getOrderStatus()); // 두 값이 일치하는지에 대한 조건 o.status =: status(파라미터)
+            criteria.add(status);
+        }
+
+        //회원 이름 검색
+        if (StringUtils.hasText(orderSearch.getMemberName())) {
+            Predicate name = cb.like(m.<String>get("name"), "%" + orderSearch.getMemberName() + "%");
+            criteria.add(name);
+        }
+        cq.where(cb.and(criteria.toArray(new Predicate[criteria.size()])));
+        TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000);//최대 1000건 조회
+        return query.getResultList();
+
+
     }
 }
