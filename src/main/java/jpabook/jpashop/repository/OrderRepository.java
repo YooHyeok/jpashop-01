@@ -71,6 +71,7 @@ public class OrderRepository {
     /**
      * JPA Criteria 기능
      * 단점 : 유지보수성 ZERO 가독성 똥망
+     * 대안 : queryDSL
      */
     public List<Order> findAllByCriteria(OrderSearch orderSearch) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -93,7 +94,5 @@ public class OrderRepository {
         cq.where(cb.and(criteria.toArray(new Predicate[criteria.size()])));
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000);//최대 1000건 조회
         return query.getResultList();
-
-
     }
 }
