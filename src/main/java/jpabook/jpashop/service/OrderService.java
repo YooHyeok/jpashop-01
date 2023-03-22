@@ -20,8 +20,6 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
 
-    //주문
-
     /**
      * 1. [member, item] 엔티티 조회(회원, 상품)
      * 2. [delevery] 배송정보 생성(member.주소)
@@ -50,7 +48,16 @@ public class OrderService {
         return order.getId();
     }
 
-    //취소
+    /**
+     * 주문 취소
+     */
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        // 주문 엔티티 조회
+        Order order = orderRepository.findOne(orderId);
+        // 주문 취소
+        order.cancel();
+    }
 
     //검색
 }
